@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Writing DOM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #emailError, #confirmPasswordError {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body> 
+    <!-- no more additional HTML tags -->
+    <div id="app"></div>
+
+    <!-- write only within the script tags -->
+    <script>
+        // Create form elements
+        const form = document.createElement('form');
+
+        // Create first name input
+        const firstNameDiv = document.createElement('div');
+        const firstNameLabel = document.createElement('label');
+        firstNameLabel.textContent = 'First Name:';
+        const firstNameInput = document.createElement('input');
+        firstNameInput.type = 'text';
+        firstNameInput.id = 'firstName';
+        firstNameInput.name = 'firstName';
+        firstNameInput.required = true;
+        firstNameDiv.appendChild(firstNameLabel);
+        firstNameDiv.appendChild(firstNameInput);
+
+        // Create last name input
+        const lastNameDiv = document.createElement('div');
+        const lastNameLabel = document.createElement('label');
+        lastNameLabel.textContent = 'Last Name:';
+        const lastNameInput = document.createElement('input');
+        lastNameInput.type = 'text';
+        lastNameInput.id = 'lastName';
+        lastNameInput.name = 'lastName';
+        lastNameInput.required = true;
+        lastNameDiv.appendChild(lastNameLabel);
+        lastNameDiv.appendChild(lastNameInput);
+
+        // Create email input
+        const emailDiv = document.createElement('div');
+        const emailLabel = document.createElement('label');
+        emailLabel.textContent = 'Email Address:';
+        const emailInput = document.createElement('input');
+        emailInput.type = 'email';
+        emailInput.id = 'email';
+        emailInput.name = 'email';
+        emailInput.required = true;
+        emailDiv.appendChild(emailLabel);
+        emailDiv.appendChild(emailInput);
+        const emailError = document.createElement('div');
+        emailError.id = 'emailError';
+        emailError.style.color = 'red';
+        emailDiv.appendChild(emailError);
+
+        // Create password input
+        const passwordDiv = document.createElement('div');
+        const passwordLabel = document.createElement('label');
+        passwordLabel.textContent = 'Password:';
+        const passwordInput = document.createElement('input');
+        passwordInput.type = 'password';
+        passwordInput.id = 'password';
+        passwordInput.name = 'password';
+        passwordInput.required = true;
+        passwordDiv.appendChild(passwordLabel);
+        passwordDiv.appendChild(passwordInput);
+
+        // Create confirm password input
+        const confirmPasswordDiv = document.createElement('div');
+        const confirmPasswordLabel = document.createElement('label');
+        confirmPasswordLabel.textContent = 'Confirm Password:';
+        const confirmPasswordInput = document.createElement('input');
+        confirmPasswordInput.type = 'password';
+        confirmPasswordInput.id = 'confirmPassword';
+        confirmPasswordInput.name = 'confirmPassword';
+        confirmPasswordInput.required = true;
+        confirmPasswordDiv.appendChild(confirmPasswordLabel);
+        confirmPasswordDiv.appendChild(confirmPasswordInput);
+        const confirmPasswordError = document.createElement('div');
+        confirmPasswordError.id = 'confirmPasswordError';
+        confirmPasswordError.style.color = 'red';
+        confirmPasswordDiv.appendChild(confirmPasswordError);
+
+        // Create submit button
+        const submitButton = document.createElement('input');
+        submitButton.type = 'submit';
+        submitButton.value = 'Register';
+
+        // Append all elements to form
+        form.appendChild(firstNameDiv);
+        form.appendChild(lastNameDiv);
+        form.appendChild(emailDiv);
+        form.appendChild(passwordDiv);
+        form.appendChild(confirmPasswordDiv);
+        form.appendChild(submitButton);
+
+        // Append form to the app div
+        document.getElementById('app').appendChild(form);
+
+        // JavaScript validation
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Clear previous errors
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('confirmPasswordError').textContent = '';
+
+            // Get values
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            let valid = true;
+
+            // Validate email
+            const emailPattern = /^[^\s@]+@(domain\.com|domain\.com\.ph)$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').textContent = 'Email address is invalid.';
+                valid = false;
+            }
+
+            // Validate confirm password
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+                valid = false;
+            }
+
+            // If valid, show success message
+            if (valid) {
+                alert('Registration successful!');
+                // You can handle form submission here, e.g., send data to server
+            }
+        });
+    </script>
+</body>
+</html>
